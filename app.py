@@ -58,3 +58,25 @@ def get_edit_user(id):
     id = id
     user = User.query.filter(User.id == id).first()
     return render_template('edit-user.html', user=user)
+
+@app.route('/users/<id>/edit', methods=["POST"])
+def post_edit_user(id):
+    id = id
+    first_name = request.form.get("first-name")
+    last_name = request.form.get("last-name")
+    img_url = request.form.get("img-url")
+
+    user = User.query.filter(User.id == id).first()
+    user.first_name = first_name
+    user.last_name = last_name
+    user.img_URL = img_url
+    db.session.commit()
+    return redirect(f"/users/{id}")
+
+@app.route('/users/<id>/delete', methods=["POST"])
+def delete_user(id):
+    id = id
+    user = User.query.filter(User.id == id)
+    user.delete()
+    db.session.commit()
+    return redirect("/users")
