@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+<div class="container">
+  {% block content %}
+  <img src="{{user.img_URL}}" alt="profile pic ;)" />
+  <div>
+    <span style="font-size:xx-large">
+      {{user.first_name}} {{user.last_name}}
+    </span>
+    <a class="btn btn-primary" href="/users/{{user.id}}/edit">
+      Edit
+    </a>
+    <a class="btn btn-danger" href="/users/{{user.id}}/delete">
+      Delete
+    </a>
+  </div>
+  {% endblock %}
+</div>
