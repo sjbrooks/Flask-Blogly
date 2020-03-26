@@ -80,6 +80,7 @@ def post_new_post(id):
     title = request.form.get("title")
     content = request.form.get("content")
 
+    # other way to do it is appending this to the users table
     post = Post(title=title, content=content, user_id=id)
     db.session.add(post)
     db.session.commit()
@@ -92,7 +93,6 @@ def render_new_post(id):
 
 @app.route('/posts/<id>/edit')
 def get_edit_post(id):
-    print('\n \n \n WE MADE IT TO GET EDIT POST')
     post = Post.query.get_or_404(id)
     return render_template('edit-post.html', post=post)
 
@@ -115,4 +115,5 @@ def post_delete_post(id):
     post.delete()
     db.session.commit()
     return redirect(f"/users/{user_id}")
+
 
