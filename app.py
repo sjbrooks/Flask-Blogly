@@ -9,10 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'zlxkcjvoiw34jpqr95ijafkdj'
-app.config['TESTING'] = True
-app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
-# db = SQLAlchemy()
 connect_db(app)
 db.create_all()
 
@@ -64,7 +61,7 @@ def post_edit_user(id):
 
 @app.route('/users/<id>/delete', methods=["POST"])
 def delete_user(id):
-    user = User.query.get_or_404(id)
+    user = User.query.filter(User.id == id)
     user.delete()
     db.session.commit()
     return redirect("/users")
