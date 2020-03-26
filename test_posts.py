@@ -28,7 +28,6 @@ class FlaskTests(TestCase):
         """Add sample post."""
 
         post = Post(title="Best Pinot Noirs at Trader Joe's", content="Brand 1 is da bomb, but Trader Jose's is always good too", user_id=self.user_id)
-        print(f'\n\n\n\n THE USER ID IN SET UP IS,{self.user_id}')
 
         db.session.add(post)
         db.session.commit()

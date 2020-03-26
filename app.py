@@ -66,6 +66,8 @@ def delete_user(id):
     db.session.commit()
     return redirect("/users")
 
+
+# Start of Part II
 @app.route('/users/<id>/posts/new')
 def render_post_form(id):
     user = User.query.get_or_404(id)
@@ -81,7 +83,6 @@ def post_new_post(id):
     post = Post(title=title, content=content, user_id=id)
     db.session.add(post)
     db.session.commit()
-
     return redirect(f"/users/{id}")
 
 @app.route('/posts/<id>')
@@ -89,18 +90,15 @@ def render_new_post(id):
     post = Post.query.get_or_404(id)
     return render_template('post-detail.html', post=post)
 
-
 @app.route('/posts/<id>/edit')
 def get_edit_post(id):
     print('\n \n \n WE MADE IT TO GET EDIT POST')
     post = Post.query.get_or_404(id)
     return render_template('edit-post.html', post=post)
 
-
 @app.route('/posts/<id>/edit', methods=['POST'])
 def post_edit_post(id):
     post = Post.query.get_or_404(id)
-    
     title = request.form.get("title")
     content = request.form.get("content")
 
@@ -109,7 +107,6 @@ def post_edit_post(id):
     db.session.commit()
 
     return redirect(f"/users/{post.user_id}")
-
 
 @app.route('/posts/<id>/delete', methods=['POST'])
 def post_delete_post(id):
