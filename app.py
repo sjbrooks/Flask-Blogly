@@ -88,3 +88,24 @@ def post_new_post(id):
 def render_new_post(id):
     post = Post.query.get_or_404(id)
     return render_template('post-detail.html', post=post)
+
+
+@app.route('/posts/<id>/edit')
+def get_edit_post(id):
+    print('\n \n \n WE MADE IT TO GET EDIT POST')
+    post = Post.query.get_or_404(id)
+    return render_template('edit-post.html', post=post)
+
+
+@app.route('/posts/<id>/edit', methods=['POST'])
+def post_edit_post(id):
+    post = Post.query.get_or_404(id)
+    
+    title = request.form.get("title")
+    content = request.form.get("content")
+
+    post.title = title
+    post.content = content
+    db.session.commit()
+
+    return redirect(f"/users/{post.user_id}")
