@@ -118,3 +118,4 @@ def post_delete_post(id):
     post.delete()
     db.session.commit()
     return redirect(f"/users/{user_id}")
+

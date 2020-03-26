@@ -1,6 +1,5 @@
 from app import app
 from unittest import TestCase
-# from flask import session
 from models import db, User
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
@@ -11,6 +10,7 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 db.drop_all()
 db.create_all()
 
+
 class FlaskTests(TestCase):
     def setUp(self):
         """Add sample user."""
@@ -19,7 +19,6 @@ class FlaskTests(TestCase):
         user = User(first_name="Test", last_name="User")
         db.session.add(user)
         db.session.commit()
-
         self.user_id = user.id
 
     def tearDown(self):
@@ -81,3 +80,4 @@ class FlaskTests(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('<ul>', html)
+
