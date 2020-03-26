@@ -9,6 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'zlxkcjvoiw34jpqr95ijafkdj'
+app.config['TESTING'] = True
+app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
 # db = SQLAlchemy()
 connect_db(app)
@@ -20,13 +22,6 @@ debug = DebugToolbarExtension(app)
 def render_users():
 
     users = User.query.all()
-    # # names = []
-
-    # # for user in users:
-    # #     names.append(User.combine_name())
-
-    # for user in users:
-
     return render_template('user-listing.html', users=users)
 
 @app.route('/users/new')
@@ -37,36 +32,30 @@ def get_add_user():
 def post_add_user():
     first_name = request.form.get("first-name")
     last_name = request.form.get("last-name")
-    img_url = request.form.get("img-url")
-    print("\n \n \n IMG URL IS",img_url)
-    if(img_url == ""):
-        user = User(first_name=first_name, last_name=last_name)
-    else:
-        user = User(first_name=first_name, last_name=last_name, img_URL=img_url)
+    img_url = request.form.get("img-url") or None
+
+    user = User(first_name=first_name, last_name=last_name, img_URL=img_url)
     db.session.add(user)
     db.session.commit()
     return redirect('/users')
 
 @app.route('/users/<id>')
 def user_profile(id):
-    id = id
-    user = User.query.filter(User.id == id).first()
+    user = User.query.get_or_404(id)
     return render_template('user-profile.html', user=user)
 
 @app.route('/users/<id>/edit')
 def get_edit_user(id):
-    id = id
-    user = User.query.filter(User.id == id).first()
+    user = User.query.get_or_404(id)
     return render_template('edit-user.html', user=user)
 
 @app.route('/users/<id>/edit', methods=["POST"])
 def post_edit_user(id):
-    id = id
     first_name = request.form.get("first-name")
     last_name = request.form.get("last-name")
     img_url = request.form.get("img-url")
 
-    user = User.query.filter(User.id == id).first()
+    user = User.query.get_or_404(id)
     user.first_name = first_name
     user.last_name = last_name
     user.img_URL = img_url
@@ -75,8 +64,7 @@ def post_edit_user(id):
 
 @app.route('/users/<id>/delete', methods=["POST"])
 def delete_user(id):
-    id = id
-    user = User.query.filter(User.id == id)
+    user = User.query.get_or_404(id)
     user.delete()
     db.session.commit()
     return redirect("/users")
