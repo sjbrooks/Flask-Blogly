@@ -1,0 +1,23 @@
+{% extends 'base.html' %} 
+
+{% block title %} 
+Add Post for {{user.first_name}} {{user.last_name}}
+{% endblock %} 
+{% block content %}
+<form action="" method="POST">
+  <div class="form-group">
+    <label for="title">
+      Title
+    </label>
+    <input type="text" name="title"/>
+  </div>
+  <div class="form-group">
+    <label for="content">
+      Content
+    </label>
+    <textarea name="contnet" cols="30" rows="10"></textarea>
+  </div>
+  <a href="/users/{{user.id}}" class="btn btn-outline-success">Cancel</a>
+  <button type="submit">Add</button>
+</form>
+{% endblock %}

@@ -19,5 +19,27 @@
       </button>
     </form>
   </div>
+
+  <h3>
+    Posts
+  </h3>
+
+  <ul>
+    {% for post in user.posts %}
+      <li>
+        {{ post }}
+      </li>
+    {% endfor %}
+  </ul>
+
+  <form action="/users/{{user.id}}/posts/new">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      href="/users/{{user.id}}/delete"
+    >
+      Add Post
+    </button>
+
   {% endblock %}
 </div>

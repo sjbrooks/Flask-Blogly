@@ -65,3 +65,8 @@ def delete_user(id):
     user.delete()
     db.session.commit()
     return redirect("/users")
+
+@app.route('/users/<id>/posts/new')
+def render_post_form(id):
+    user = User.query.filter(User.id == id)
+    return render_template("post-form.html", user=user)
