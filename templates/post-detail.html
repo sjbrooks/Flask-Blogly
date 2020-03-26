@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+<div class="container">
+  {% block content %}
+  <div>
+    <h1>
+      {{ post.title }}
+    </h1>
+
+    <p>
+      {{ post.content }}
+    </p>
+
+    <p>
+      <i>
+        By {{ post.user.first_name }} {{ post.user.last_name }}
+      </i>
+    </p>
+
+    <a class="btn btn-outline-primary" href="/users/{{ post.user.id }}">
+      Cancel
+    </a>
+    <a class="btn btn-primary" href="/posts/{{ post.id }}/edit/">
+      Edit
+    </a>
+    <form action="/posts/{{ post.id }}/delete" method="POST">
+      <button type="submit" class="btn btn-danger">
+        Delete
+      </button>
+    </form>
+  </div>
+</div>
+  {% endblock %}
+
