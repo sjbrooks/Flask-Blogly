@@ -71,7 +71,8 @@ def delete_user(id):
 @app.route('/users/<id>/posts/new')
 def render_post_form(id):
     user = User.query.get_or_404(id)
-    return render_template("post-form.html", user=user)
+    tags = Tag.query.all()
+    return render_template("post-form.html", user=user, tags=tags)
 
 @app.route('/users/<id>/posts/new', methods=['POST'])
 def post_new_post(id):
@@ -79,10 +80,19 @@ def post_new_post(id):
 
     title = request.form.get("title")
     content = request.form.get("content")
+    req = request.form
+    print("\n\n\n\n\n REQUEST IS",req)
 
-    # other way to do it is appending this to the users table
     post = Post(title=title, content=content, user_id=id)
     db.session.add(post)
+    db.session.commit()
+    for key in req:
+        if (key != "title" and key != "content" and req[key]=='on'):
+            tag_id = key
+            tag = Tag.query.get_or_404(tag_id)
+            post.tags.append(tag)
+
+    # other way to do it is appending this to the users table
     db.session.commit()
     return redirect(f"/users/{id}")
 
@@ -125,3 +135,18 @@ def render_tags():
 def render_tag(id):
     tag = Tag.query.get_or_404(id)
     return render_template('tag-detail.html', tag=tag)
+
+@app.route('/tags/<id>/edit')
+def render_edit_tag(id):
+    tag = Tag.query.get_or_404(id)
+    return render_template('edit-tag.html', tag=tag)
+
+@app.route('/tags/<id>/edit', methods=['POST'])
+def post_edit_tag(id):
+    tag = Tag.query.get_or_404(id)
+    name = request.form.get("name")
+    tag.name = name
+    db.session.commit()
+
+    return redirect(f"/tags/{id}")
+

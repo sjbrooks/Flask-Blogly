@@ -98,3 +98,4 @@ class PostTag(db.Model):
 
         pt = self
         return f"<PostTag {pt.post_id} {pt.tag_id}>"
+
